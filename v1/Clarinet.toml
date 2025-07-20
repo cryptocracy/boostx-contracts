@@ -1,0 +1,43 @@
+[project]
+name = 'boostx-contract'
+description = ''
+authors = []
+telemetry = true
+cache_dir = './.cache'
+
+[[project.requirements]]
+contract_id = 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard'
+
+[[project.requirements]]
+contract_id = 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait'
+[contracts.boostx]
+path = 'contracts/boostx.clar'
+clarity_version = 3
+epoch = 3.1
+
+[contracts.boostx-supported-tokens]
+path = 'contracts/boostx-supported-tokens.clar'
+clarity_version = 3
+epoch = 3.1
+
+[contracts.spacedrops]
+path = 'contracts/boostx-spacedrops.clar'
+clarity_version = 3
+epoch = 3.1
+
+[contracts.token-a]
+path = 'contracts/token-a.clar'
+clarity_version = 3
+epoch = 3.1
+[repl.analysis]
+passes = ['check_checker']
+
+[repl.analysis.check_checker]
+strict = false
+trusted_sender = false
+trusted_caller = false
+callee_filter = false
+
+[repl.remote_data]
+enabled = false
+api_url = 'https://api.hiro.so'
