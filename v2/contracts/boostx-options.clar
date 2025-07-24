@@ -12,6 +12,17 @@
 (define-data-var sponsor2 (optional uint) none)
 (define-data-var sponsor3 (optional uint) none)
 
+(define-data-var bns-contract principal tx-sender)
+(define-public (update-bns-contract (newContract <nft-trait>))
+    (begin
+        (asserts! (is-eq tx-sender owner) NOT-AUTHORIZED)
+        (ok (var-set bns-contract (contract-of newContract)))
+    )
+)
+(define-read-only (get-bns-contract-var)
+    (var-get bns-contract)
+)
+
 (define-data-var storageUri (string-utf8 255) u"")
 
 (define-read-only (get-storage-uri)
@@ -76,45 +87,65 @@
 )
 
 (define-private (validate-id
-        (id uint)
+        (args {
+            id: uint,
+            arg-bns-contract: <nft-trait>,
+        })
         (res bool)
     )
     (let (
-            (id-owner (unwrap! (unwrap! (contract-call? .bns-v2 get-owner id) false) false))
+            (bns-contract-arg (get arg-bns-contract args))
+            (bns-id (get id args))
+            (id-owner (unwrap!
+                (unwrap! (contract-call? bns-contract-arg get-owner bns-id) false)
+                false
+            ))
             ;; Returns the BNS-V2 ID's princpal
         )
         (asserts! (is-standard id-owner) false)
-        true
+        res
     )
 )
+(define-private (re-arg
+        (id uint)
+        (arg-bns-contract <nft-trait>)
+    )
+    {
+        id: id,
+        arg-bns-contract: arg-bns-contract,
+    }
+)
+(define-public (update-sponsor
+        (sponsors (list 3 uint))
+        (arg-bns-contract <nft-trait>)
+    )
+    (let 
+        (
+            (rearged-values (map re-arg sponsors (list arg-bns-contract arg-bns-contract arg-bns-contract)))
+        )
+        (asserts! (is-eq (var-get bns-contract) (contract-of arg-bns-contract)) NOT-AUTHORIZED)
+        (asserts! (fold validate-id rearged-values true) INVALID-ADDRESS)
 
-(define-public (update-sponsor (sponsors (list 3 uint)))
-    (begin
-        ;; Proceed to update sponsor vars
-        (if (is-eq (len sponsors) u3)
-            (begin
-                ;; Validate all sponsor IDs
-                (asserts! (fold validate-id sponsors true) INVALID-ADDRESS)
-                (var-set sponsor1 (element-at? sponsors u0))
-                (var-set sponsor2 (element-at? sponsors u1))
-                (var-set sponsor3 (element-at? sponsors u2))
-                (ok true)
-            )
+        (if (is-eq (len sponsors) u1)
+            (var-set sponsor1 (element-at? sponsors u0))
             (if (is-eq (len sponsors) u2)
                 (begin
                     (var-set sponsor1 (element-at? sponsors u0))
                     (var-set sponsor2 (element-at? sponsors u1))
-                    (ok true)
+                    true
                 )
-                (if (is-eq (len sponsors) u1)
+                (if (is-eq (len sponsors) u3)
                     (begin
                         (var-set sponsor1 (element-at? sponsors u0))
-                        (ok true)
+                        (var-set sponsor2 (element-at? sponsors u1))
+                        (var-set sponsor3 (element-at? sponsors u2))
+                        true
                     )
-                    (ok false)
+                    false
                 )
             )
         )
+        (ok true)
     )
 )
 

@@ -1,3 +1,5 @@
+(use-trait nft-trait 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.nft-trait)
+
 (define-trait boostx-options-trait (   
     (get-storage-uri
         ()
@@ -8,7 +10,7 @@
         (response bool uint)
     )
     (update-sponsor
-        ((list 3 uint))
+        ((list 3 uint) <nft-trait>)
         (response bool uint)
     )
     (get-options-ids
