@@ -117,7 +117,7 @@
 		(bns-contract <sip-009-trait>)
 	)
 	(let (
-			(royalty-ids (unwrap! (contract-call? options-contract get-options-ids) ERR-NOTFOUND))
+			(royalty-ids (unwrap! (contract-call? options-contract get-options-id-list) ERR-NOTFOUND))
 			(profile-stx-balance (stx-get-balance contract-caller))
 			(stx-fee (unwrap! (get stx (map-get? fee "fees")) ERR-NOTFOUND))
 			(ft-fee (unwrap! (get ft (map-get? fee "fees")) ERR-NOTFOUND))

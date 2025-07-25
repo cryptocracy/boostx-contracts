@@ -10,6 +10,9 @@ contract_id = 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standa
 
 [[project.requirements]]
 contract_id = 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait'
+
+[[project.requirements]]
+contract_id = 'SP2JMM3PH9AGMASBD11SHG4HWDS6CTY9MGN6CW48G.BNS-V2'
 [contracts.bns-v2]
 path = 'contracts/bns-v2.clar'
 clarity_version = 3
