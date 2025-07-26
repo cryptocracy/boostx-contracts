@@ -8,6 +8,7 @@
 (define-constant INVALID-ID (err u104))
 (define-constant EMPTY-LIST (err u105))
 (define-constant EMPTY-URI (err u106))
+(define-constant NO-SELF (err u107))
 
 (define-constant owner tx-sender)
 
@@ -97,6 +98,7 @@
             ))
             ;; Returns the BNS ID's princpal
         )
+        (asserts! (not (is-eq tx-sender id-owner) false))
         (asserts! (is-standard id-owner) false)
         res
     )
@@ -161,6 +163,7 @@
         )
         (asserts! (is-some ref-id) INVALID-ID)
         (asserts! (is-eq tx-sender owner) NOT-AUTHORIZED)
+        (asserts! (not (is-eq tx-sender id-owner) NO-SELF))
         (asserts! (is-eq (var-get bns-contract) (contract-of arg-bns-contract))
             NOT-AUTHORIZED
         )
