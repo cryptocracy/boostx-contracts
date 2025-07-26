@@ -17,7 +17,7 @@
 (define-data-var sponsor2 (optional uint) none)
 (define-data-var sponsor3 (optional uint) none)
 
-(define-data-var bns-contract principal 'SP2JMM3PH9AGMASBD11SHG4HWDS6CTY9MGN6CW48G.BNS-V2)
+(define-data-var bns-contract principal 'SP2QEZ06AGJ3RKJPBV14SY1V5BBFNAW33D96YPGZF.BNS-V2)
 (define-read-only (get-bns-contract)
     (var-get bns-contract)
 )

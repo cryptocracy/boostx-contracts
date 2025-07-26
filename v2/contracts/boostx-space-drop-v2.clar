@@ -1,5 +1,5 @@
 ;; title:  boostx-spacedrops
-;; version:  1.7
+;; version:  2.0
 ;; summary:  BoostX Spacedrops Smart Contract for BoostX Browser Extension
 ;; authors:  cryptodude.btc and cryptosmith.btc
 
