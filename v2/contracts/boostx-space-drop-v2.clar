@@ -108,7 +108,7 @@
 	)
 )
 
-(define-private (test-validate-contract-and-balance
+(define-private (validate-contract-and-balance
 		(is-stx bool)
 		(total-amount uint)
 		(token-contract (optional <sip-010-trait>))
@@ -143,37 +143,6 @@
 			)
 		)
 		true
-	)
-)
-
-(define-private (validate-contract-and-balance
-		(is-stx bool)
-		(total-amount uint)
-		(token-contract (optional <sip-010-trait>))
-	)
-	(if is-stx
-		(ok (asserts! (>= (stx-get-balance tx-sender) total-amount)
-			ERR-INSUFFICIENT-BALANCE
-		))
-		(let (
-				(token (unwrap! token-contract ERR-NOTFOUND))
-				(user-ft-balance (unwrap! (contract-call? token get-balance tx-sender) ERR-NOTFOUND))
-				(user-stx-balance (stx-get-balance tx-sender))
-				(service-fee (unwrap! (get ft (get-fees)) ERR-NOTFOUND))
-			)
-			(asserts!
-				(unwrap!
-					(unwrap! (contract-call? .boostx-supported-tokens get-token-status token)
-						ERR-NOTFOUND
-					)
-					ERR-NOTFOUND
-				)
-				ERR-TOKEN-NOT-SUPPORTED
-			)
-			(asserts! (>= user-ft-balance total-amount) ERR-INSUFFICIENT-BALANCE)
-			(asserts! (>= user-stx-balance service-fee) ERR-INSUFFICIENT-BALANCE)
-			(ok true)
-		)
 	)
 )
 
@@ -231,7 +200,7 @@
 			(ft-fee-platform (- ft-fee ft-fee-offset))
 		)
 		(asserts!
-			(test-validate-contract-and-balance is-stx total-amount token-contract)
+			(validate-contract-and-balance is-stx total-amount token-contract)
 			ERR-VALIDATING-BALANCE-OR-CONTRACT
 		)
 		(try! (fold send-token recipients (ok true)))

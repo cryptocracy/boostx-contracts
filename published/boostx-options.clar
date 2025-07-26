@@ -35,28 +35,16 @@
     )
 )
 
-(define-read-only (construct-options-to-tuple (id uint))
-    (let (
-            (name (unwrap-panic (contract-call? .bns-v2 get-bns-from-id id)))
-            (address (unwrap-panic (contract-call? .bns-v2 get-owner id)))
-        )
-        {
-            id: id,
-            name: {
-                name: (get name name),
-                namespace: (get namespace name),
-            },
-            address: address,
-        }
-    )
-)
-(define-read-only (get-options)
-    (let ((royalty-addresses (unwrap! (get-options-ids) NOT-FOUND)))
-        (ok (map construct-options-to-tuple royalty-addresses))
-    )
+(define-read-only (get-options-id-tuple)
+    {
+        referee: (var-get referee),
+        sponsor1: (var-get sponsor1),
+        sponsor2: (var-get sponsor2),
+        sponsor3: (var-get sponsor3),
+    }
 )
 
-(define-read-only (get-options-ids)
+(define-read-only (get-options-id-list)
     (let (
             (referer-bns-id (default-to u0 (var-get referee)))
             (sponsorer1 (default-to u0 (var-get sponsor1)))
@@ -119,11 +107,12 @@
         (sponsors (list 3 uint))
         (arg-bns-contract <nft-trait>)
     )
-    (let 
-        (
-            (rearged-values (map re-arg sponsors (list arg-bns-contract arg-bns-contract arg-bns-contract)))
+    (let ((rearged-values (map re-arg sponsors
+            (list arg-bns-contract arg-bns-contract arg-bns-contract)
+        )))
+        (asserts! (is-eq (var-get bns-contract) (contract-of arg-bns-contract))
+            NOT-AUTHORIZED
         )
-        (asserts! (is-eq (var-get bns-contract) (contract-of arg-bns-contract)) NOT-AUTHORIZED)
         (asserts! (fold validate-id rearged-values true) INVALID-ADDRESS)
         (asserts! (is-eq tx-sender owner) NOT-AUTHORIZED)
 
@@ -150,13 +139,21 @@
     )
 )
 
-(define-public (set-referee (ref-id (optional uint)) (arg-bns-contract <nft-trait>))
+(define-public (set-referee
+        (ref-id (optional uint))
+        (arg-bns-contract <nft-trait>)
+    )
     (let (
             (id (unwrap! ref-id NOT-FOUND))
-            (id-owner (unwrap! (unwrap! (contract-call? arg-bns-contract get-owner id) NOT-FOUND) NOT-FOUND))
+            (id-owner (unwrap!
+                (unwrap! (contract-call? arg-bns-contract get-owner id) NOT-FOUND)
+                NOT-FOUND
+            ))
             ;; Returns the BNS-V2 ID's princpal
         )
-        (asserts! (is-eq (var-get bns-contract) (contract-of arg-bns-contract)) NOT-AUTHORIZED)
+        (asserts! (is-eq (var-get bns-contract) (contract-of arg-bns-contract))
+            NOT-AUTHORIZED
+        )
         (asserts! (is-eq tx-sender owner) NOT-AUTHORIZED)
         (asserts! (is-standard id-owner) INVALID-ADDRESS)
         ;; This validates the ID has a valid princpal address
