@@ -1,4 +1,4 @@
-(impl-trait 'SP337NP61BD34ES77QK4XZP6R9AXV235GV6W1YMNT.boostx-options-trait.boostx-options-trait)
+(impl-trait .boostx-options-trait.boostx-options-trait)
 (use-trait nft-trait 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.nft-trait)
 
 (define-constant NOT-FOUND (err u100))
@@ -98,7 +98,7 @@
             ))
             ;; Returns the BNS ID's princpal
         )
-        (asserts! (not (is-eq tx-sender id-owner) false))
+        (asserts! (not (is-eq tx-sender id-owner)) false)
         (asserts! (is-standard id-owner) false)
         res
     )
@@ -163,7 +163,7 @@
         )
         (asserts! (is-some ref-id) INVALID-ID)
         (asserts! (is-eq tx-sender owner) NOT-AUTHORIZED)
-        (asserts! (not (is-eq tx-sender id-owner) NO-SELF))
+        (asserts! (not (is-eq tx-sender id-owner)) NO-SELF)
         (asserts! (is-eq (var-get bns-contract) (contract-of arg-bns-contract))
             NOT-AUTHORIZED
         )

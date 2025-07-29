@@ -98,7 +98,7 @@
             ))
             ;; Returns the BNS ID's princpal
         )
-        (asserts! (not (is-eq tx-sender id-owner) false))
+        (asserts! (not (is-eq tx-sender id-owner)) false)
         (asserts! (is-standard id-owner) false)
         res
     )
@@ -163,7 +163,7 @@
         )
         (asserts! (is-some ref-id) INVALID-ID)
         (asserts! (is-eq tx-sender owner) NOT-AUTHORIZED)
-        (asserts! (not (is-eq tx-sender id-owner) NO-SELF))
+        (asserts! (not (is-eq tx-sender id-owner)) NO-SELF)
         (asserts! (is-eq (var-get bns-contract) (contract-of arg-bns-contract))
             NOT-AUTHORIZED
         )
