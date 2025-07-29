@@ -5,7 +5,7 @@
 
 (use-trait sip-010-trait 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sip-010-trait-ft-standard.sip-010-trait)
 (use-trait sip-009-trait 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.nft-trait)
-(use-trait boostx-options-trait .boostx-options-trait.boostx-options-trait)
+(use-trait boostx-options-trait 'SP337NP61BD34ES77QK4XZP6R9AXV235GV6W1YMNT.boostx-options-trait.boostx-options-trait)
 
 (define-constant ERR-UNAUTHORIZED (err u1000))
 (define-constant ERR-INVALID-WALLET (err u1001))
