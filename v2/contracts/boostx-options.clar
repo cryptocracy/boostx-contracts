@@ -1,4 +1,9 @@
-(impl-trait .boostx-options-trait.boostx-options-trait)
+;; title:  boostx-options
+;; version:  2.0
+;; summary:  BoostX Options Smart Contract for BoostX Browser Extension
+;; authors:  cryptodude.btc and cryptosmith.btc
+
+(impl-trait 'SP337NP61BD34ES77QK4XZP6R9AXV235GV6W1YMNT.boostx-options-trait.boostx-options-trait)
 (use-trait nft-trait 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.nft-trait)
 
 (define-constant NOT-FOUND (err u100))
